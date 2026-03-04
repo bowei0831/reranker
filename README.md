@@ -53,7 +53,7 @@ python scripts/eval_cmteb.py --model_path ./outputs/my_model
 ```
 ```
 
-### 3. 建立 requirements.txt
+### 3. 建立 requirements.txt or 查看install.md
 ```
 torch>=2.0.0
 transformers>=4.30.0
