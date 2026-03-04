@@ -1,0 +1,161 @@
+# 安裝指南 (CUDA 12.2)
+
+請**按順序**執行以下安裝步驟。
+
+---
+
+## 步驟 1: 建立 Conda 環境
+
+```bash
+conda create -n bge-reranker python=3.10 -y
+conda activate bge-reranker
+```
+
+---
+
+## 步驟 2: 安裝 PyTorch (CUDA 12.1 相容 12.2)
+
+```bash
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu121
+```
+
+> 註：PyTorch cu121 版本可以在 CUDA 12.2 上運行
+
+**驗證安裝：**
+```bash
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}'); print(f'CUDA version: {torch.version.cuda}')"
+```
+
+---
+
+## 步驟 3: 安裝 Transformers 相關
+
+```bash
+pip install transformers==4.40.0
+pip install datasets==2.19.0
+pip install accelerate==0.29.0
+pip install tokenizers==0.19.0
+```
+
+---
+
+## 步驟 4: 安裝 DeepSpeed
+
+```bash
+pip install deepspeed==0.14.0
+```
+
+**驗證：**
+```bash
+ds_report
+```
+
+---
+
+## 步驟 5: 安裝 FlagEmbedding
+
+```bash
+pip install FlagEmbedding==1.2.10
+```
+
+若要使用 finetune 功能：
+```bash
+pip install "FlagEmbedding[finetune]"
+```
+
+---
+
+## 步驟 6: 安裝其他依賴
+
+```bash
+pip install tqdm
+pip install tensorboard
+pip install huggingface_hub
+pip install peft  # 若需要 LoRA
+```
+
+---
+
+## 完整安裝指令 (一鍵)
+
+如果你想一次安裝所有套件：
+
+```bash
+# 建立環境
+conda create -n bge-reranker python=3.10 -y
+conda activate bge-reranker
+
+# PyTorch (CUDA 12.1/12.2)
+pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu121
+
+# Transformers 生態系
+pip install transformers==4.40.0 datasets==2.19.0 accelerate==0.29.0 tokenizers==0.19.0
+
+# DeepSpeed
+pip install deepspeed==0.14.0
+
+# FlagEmbedding
+pip install "FlagEmbedding[finetune]"
+
+# 其他
+pip install tqdm tensorboard huggingface_hub peft
+```
+
+---
+
+## 驗證安裝
+
+執行以下 Python 腳本確認所有套件正確安裝：
+
+```python
+import torch
+import transformers
+import datasets
+import accelerate
+import deepspeed
+import FlagEmbedding
+
+print(f"PyTorch: {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+print(f"CUDA version: {torch.version.cuda}")
+print(f"Transformers: {transformers.__version__}")
+print(f"Datasets: {datasets.__version__}")
+print(f"Accelerate: {accelerate.__version__}")
+print(f"DeepSpeed: {deepspeed.__version__}")
+print(f"FlagEmbedding: {FlagEmbedding.__version__}")
+print("\n✓ 所有套件安裝成功！")
+```
+
+---
+
+## 套件版本總覽
+
+| 套件 | 版本 | 說明 |
+|------|------|------|
+| Python | 3.10 | |
+| PyTorch | 2.2.0+cu121 | CUDA 12.1/12.2 |
+| transformers | 4.40.0 | |
+| datasets | 2.19.0 | |
+| accelerate | 0.29.0 | |
+| deepspeed | 0.14.0 | |
+| FlagEmbedding | 1.2.10 | |
+| tokenizers | 0.19.0 | |
+| peft | latest | LoRA 支援 |
+
+---
+
+## 常見問題
+
+### Q1: CUDA 版本不符
+PyTorch cu121 可在 CUDA 12.2 上運行，無需擔心。
+
+### Q2: DeepSpeed 編譯錯誤
+```bash
+# 設定環境變數
+export CUDA_HOME=/usr/local/cuda-12.2
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+```
+
+### Q3: FlagEmbedding finetune 模組找不到
+確保安裝時使用 `pip install "FlagEmbedding[finetune]"`

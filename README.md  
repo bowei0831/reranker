@@ -1,0 +1,65 @@
+# Reranker Training Pipeline
+
+基於 BGE-Reranker 的領域微調訓練框架。
+
+## 功能
+
+- 支援自訂領域資料
+- BM25 Hard Negative 自動生成
+- 多進程加速處理
+- 完整評估流程
+
+## 快速開始
+
+### 1. 安裝套件
+```bash
+pip install -r requirements.txt
+```
+
+### 2. 準備資料
+
+資料格式為 JSONL，每行一筆：
+```json
+{"你的query欄位": "...", "你的positive欄位": "...", ...}
+```
+
+### 3. 執行 Pipeline
+```bash
+python pipeline.py \
+    --domain_data_dir /path/to/your/data \
+    --query_field "你的query欄位名稱" \
+    --positive_field "你的positive欄位名稱" \
+    --output_dir ./outputs/my_model
+```
+
+## 參數說明
+
+| 參數 | 說明 | 預設值 |
+|------|------|--------|
+| --domain_data_dir | 領域資料目錄 | 必填 |
+| --query_field | Query 欄位名稱 | 必填 |
+| --positive_field | Positive 欄位名稱 | 必填 |
+| --domain_repeat | 領域資料重複次數 | 5 |
+| --num_negatives | 負樣本數量 | 7 |
+| --base_model | Base model | xlm-roberta-large |
+
+## 評估
+
+訓練完成後執行評估：
+```bash
+# C-MTEB 標準評估
+python scripts/eval_cmteb.py --model_path ./outputs/my_model
+
+```
+```
+
+### 3. 建立 requirements.txt
+```
+torch>=2.0.0
+transformers>=4.30.0
+FlagEmbedding>=1.2.0
+rank-bm25>=0.2.2
+jieba>=0.42.1
+datasets>=2.14.0
+tqdm>=4.65.0
+numpy>=1.24.0

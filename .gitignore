@@ -1,0 +1,36 @@
+# 資料檔案（太大不上傳）
+*.jsonl
+data/
+data_merged/
+library/
+outputs/
+outputs_large/
+outputs1/
+outputs2/
+eval_results/
+eval_data/
+eval_library/
+logs/
+
+# 模型檔案
+*.bin
+*.safetensors
+*.pt
+*.pth
+checkpoint-*/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# 環境
+.env
+venv/
+*.egg-info/
+
+# 系統
+.DS_Store
+*.swp
+*.log
